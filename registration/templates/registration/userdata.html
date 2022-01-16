@@ -1,0 +1,108 @@
+
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title> - Create new group! - </title>
+        <link rel="stylesheet" type="text/css" href="{%static 'css/main.css'%}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=no">
+
+    </head>
+    <style type="text/css">
+
+
+    </style>
+    <body>
+
+        <div id = "posts" class="posts">
+            <div class="top-panel ">
+                <div id="search">
+                    <form name="myform" method="GET" action="{% url 'news:search' %}"> 
+                        {% csrf_token %}
+                        <input type="text" name="search">
+                        <input type="Submit" value="search">
+                    </form>
+                </div>
+                <a href={%url 'news:index'%} class="link-button-text">Home</a>
+                <a href={%url 'group:index'%} class="link-button-text">groups</a>
+                <a href={%url 'index'%} class="link-button-text">chat</a>
+                {%if thisuser.is_authenticated%}
+                    <a href={% url 'userdata' user.username %} class="link-button-text">{{thisuser}}(me)</a>
+                {%else%}
+                    <a href={% url 'register' %}>registration</a>
+                {%endif%}
+                <button class="top-panel-later">vniz
+                    <span class="gh">aeftaff</span></button>
+
+            </div>
+            <div class="post content-dett" style="">
+                <div style="display: flex;">
+                    <div class="icon" style="background-image: url({%static 'images/user_image.jpg'%});"></div>
+                    <h1><a  style="margin-left: 10px;" href={%url 'userdata' user %}>{{user}}</a></h1><br>
+
+
+                    {% if thisuser.is_authenticated %}
+                        {% if thisuser == user %}
+                            <div class="function-button-bg" style="margin-left: auto; margin-right: 10px">
+                            <a class="function-button" href="{%url 'delete' user%}">delete<a/>
+                            <a class="function-button" href="/logout">log out<a/>
+                            </div>
+                        {% endif%}
+                    {% endif %}   
+                </div>
+            <div class='knifesm'></div>
+            {%if posts%}
+                <div id="post">
+                    <span class="time"> - posts: </span>
+                    {%for post in posts%}
+                            <div class="background-item" style="max-height: 200px;
+                        overflow: hidden;">
+                                <h2>
+                                    <a href="{%url 'news:data' post.id%}">
+                                        {{post.title}}
+                                    </a>
+                                </h2>
+                                <span>{{post.text}}</span>
+                                <div class="knifesm"></div>
+                            </div>
+                    {%endfor%}
+                </div>
+            {%else%}
+                <p>user not have posts...</p>
+            {%endif%}
+            <div class='knifesm'></div>
+
+            <div>
+            {%if frends%}
+                <div id="frends">
+                    <span class="time"> - frends: </span>
+                    {%for frend in frends%}
+                        <div class="background-item">
+                            <a href="{%url 'userdata' frend.username%}">{{frend.username}}</a> <span>{{frend.email}}</span>
+                        </div>
+                    {%endfor%}
+                </div>
+            {%else%}
+                <p>user not have frends(...</p>
+            {%endif%}
+            <div class='knifesm'></div>
+            {%if groups%}
+                <div>
+                    <span class="time"> - groups: </span>
+                    {%for group in groups%}
+                        <div class="background-item" style="max-height: 200px;
+                        overflow: hidden;">
+                            <h2><a href="{%url 'group:group' group.id%}">{{group.titlename}}</a></h2>
+                            <span>{{group.textcontent}}</span>
+                        </div>
+                    {%endfor%}
+                </div>
+            {%endif%}
+            </div>
+</div>
+    </body>
+    <script type="text/javascript">
+        
+    </script>
+</html>

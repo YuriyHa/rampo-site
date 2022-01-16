@@ -1,0 +1,125 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!--    <script type="text/javascript" src="{% static 'js/chat.js' %}"></script>-->
+    <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+    {% block head %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <title> - PyChat - </title>
+</head>
+<body>
+    <div style="  background-color: aliceblue;">
+    <div class="top-panel " style="padding:  10px;margin: auto;
+    width: fit-content;
+    background-color: transparent;">
+                    <!-- <div id="search">
+                        <form name="myform" method="GET" action="{% url 'news:search' %}"> 
+                            {% csrf_token %}
+                            <input type="text" name="search">
+                            <input type="Submit" value="search">
+                        </form>
+                    </div> -->
+                    <a href="/search" class="link-button-text">Search</a>
+
+                    <a href={%url 'news:index'%} class="link-button-text">Home</a>
+                    <a href={%url 'group:index'%} class="link-button-text">groups</a>
+                    <a href={%url 'index'%} class="link-button-text">chat</a>
+                    {%if user.is_authenticated%}
+                        <a href={% url 'userdata' user.username %} class="link-button-text">{{user}}(me)</a>
+                    {%else%}
+                        <a href={% url 'register' %}>registration</a>
+                    {%endif%}
+                    <button class="top-panel-later">vniz
+                        <span class="gh">aeftaff</span></button>
+                </div>
+     </div>
+    <button id="handle" class="mobile" style="    z-index: 999;
+    border-radius: 50pc;
+    padding: 7px 20px;
+    font-size: 29px;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+" onclick="open_fuck();"> < </button>
+    <div style="width: 100%; height: 100%; display: flex;">
+        <div class="sidenav" id="optionbar">
+            <div class="">
+                <a href="/"><div class="col"><h2 style="padding-left: 16px; display: block-content;">PyChat</h2></div></a>
+
+                <br >
+                    
+            </div>
+
+            <hr class="mt-0 mb-4">
+            <div class="friends" style="y-overflow: auto">
+                <ul class="list-group">
+                    {% for friend in friends %}
+                        <a href="/chat/{{friend.username}}">
+                            <div class="row">
+                                <div class="col">
+                                    <img src="{% static 'images/user_image.jpg' %}" style="width: 50px; height: 50px;">
+                                </div>
+                                <div class="col">
+                                    <div class="row" style="font-color: #000;margin-left: -30px; ">
+                                        <span>{{friend.name}}</span>
+                                        
+                                    </div>
+                                        <h5 style="color: grey;">{{friend.username}}</h5>
+                                    
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="main" id='main_fuck'>
+            {% block content %}
+            <div style="margin-top: 40vh; text-align: center">
+                <h2>Select a chat & start messaging!</h2>
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+
+    <script>
+        function mybrain(noneid, onviewid, poz, aa){
+            document.getElementById(noneid).style.display="none"; 
+            document.getElementById(onviewid).style.display=poz;
+            document.getElementById("handle").innerHTML = aa ;  
+        }
+        function open_fuck(){
+            mybrain('main_fuck', 'optionbar', 'block', '>' ); 
+            document.getElementById("handle").setAttribute("onclick", "close_fuck();")
+
+        }
+
+        function close_fuck(){
+            mybrain('optionbar','main_fuck',  'block', '<' ); 
+            document.getElementById("handle").setAttribute("onclick", "open_fuck();")            
+        }
+
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+    </script>
+
+</body>
+</html>
