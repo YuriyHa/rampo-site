@@ -1,15 +1,11 @@
 
-# Django Chat Application
+# Django Applications
+- private chats  
+- public chats
+- news! application 
 
-A chat application built using django rest framework. The 
-user can search other users and add them as a friend and have 
-one to one chat with their friends.
-
-## Screenshots
-
-![image](/Images/search.jpg)
-
-![image](/Images/chat.jpg)
+## Data Base 
+the applications use SQLite3
 
 ## Installation
 

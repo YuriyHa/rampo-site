@@ -20,7 +20,12 @@ projects=[
         'image': "static/images/news.png", 
         'link': "/news/",
         'text': "News! Project"
-    }, 
+    },
+    {
+        'image': "https://logos-world.net/wp-content/uploads/2020/11/GitHub-Emblem.png", 
+        'link': "https://github.com/YuriyHa/rampo-site",
+        'text': "проекты с открытым исходным кодом!"
+    },  
 ]
 
 update= [
