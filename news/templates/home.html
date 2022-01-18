@@ -6,6 +6,7 @@
         <title> - Home - </title>
         <link rel="stylesheet" type="text/css" href="{%static 'css/main.css'%}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=no">
+        <link rel="shortcut icon" href="{% static 'images/icon.png' %}">
 
     </head>
     <style type="text/css">
@@ -23,6 +24,7 @@
                 </div>
                 <a href={%url 'news:add'%} class="link-button-text">+add post</a>
                 <a href={%url 'group:index'%} class="link-button-text">groups</a>
+                <a href={%url 'openchat'%} class="link-button-text">site.com</a>
                 <a href={%url 'index'%} class="link-button-text">chat</a>
                 {%if user.is_authenticated%}
                     <a href={% url 'userdata' user.username %} class="link-button-text">{{user}}(me)</a>

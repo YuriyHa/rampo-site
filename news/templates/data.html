@@ -4,6 +4,7 @@
 <html>
     <head>
         <title> - {{post.title}} - </title>
+        <link rel="shortcut icon" href="{% static 'images/icon.png' %}">
         <link rel="stylesheet" type="text/css" href="{%static 'css/main.css'%}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=no">
 
@@ -79,11 +80,11 @@
                     {%endif%}
                     </div>
                     <div style="padding:20px" class="description">{{comment.text}}</div>
-                </div>
+                </ div>
                 
                 <div class="knifesm"></div>
                 {%endfor%}
-                {% if user == post.publisher %}
+                {% if user.is_authenticated %}
                 <form action="{%url 'news:comment' post.id%}" method="POST">
                     {% csrf_token %}
                     <div style="display: flex;">
@@ -100,7 +101,7 @@
             {%else%}
 
             <div style=" background-color: whitesmoke;" class="content-dett">
-                {% if user == post.publisher %}
+                {% if user.is_authenticated %}
                 Comment: 
                 <form action="{%url 'news:comment' post.id%}" method="POST">
                     {% csrf_token %}

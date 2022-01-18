@@ -15,3 +15,4 @@ urlpatterns = [
     path("delete/<int:groupid>", views.delete, name="delete"),
     path("editGroupData/<int:groupid>", views.editgroupdata, name="edit"),
 ]
+ 

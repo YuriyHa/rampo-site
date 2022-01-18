@@ -42,7 +42,7 @@
 
         const text_box = '<div class="left-message" style="">' +
             
-            '<p>{description}</p>' +
+            '<p class="message-text-hey">{description}</p>' +
             '<span class="time">{time}</span>' +
             '</div>'; 
 
@@ -66,6 +66,7 @@
                 field = field.replace('{time}', time)
                 $('#board').append(field);
                 scrolltoend();
+                messageToLink(); 
             })
         }
 

@@ -92,16 +92,16 @@ def search(request):
         return render(request,"search.html",{})
 
 
-def sendmessage(request, groupid): 
-    if request.method=="POST": 
-        text=request.POST['text']
-        print("text", text)
-        print('group: ', groupid) 
-        group=get_object_or_404(Group, pk=groupid)
-        message=Message.objects.create(text=text, publisher=request.user, group=group)
-        # messages=Message.objects.filter(group=group)
-        # for i in messages: 
-        #     i.delete()
-        message.save()
-        print('message', message)
-        return redirect('/group/'+str(groupid))
+def sendmessage(request, groupid):      
+    text=request.POST['text']
+    print("text", text)
+    print('group: ', groupid) 
+    group=get_object_or_404(Group, pk=groupid)
+    message=Message.objects.create(text=text, publisher=request.user, group=group)
+    # messages=Message.objects.filter(group=group)
+    # for i in messages: 
+    #     i.delete()
+    message.save()
+    print('message', message)
+    return JsonResponse( data=None, safe=False)
+

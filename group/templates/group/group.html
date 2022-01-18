@@ -3,6 +3,7 @@
 <html>
     <head> 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <link rel="shortcut icon" href="{% static 'images/icon.png' %}">
         <title>{{group.titlename}} - Group</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=no">
         <link rel="stylesheet" href={% static 'css/main.css' %}>
@@ -80,14 +81,14 @@
                 <button class="mobile" style="margin: 0px;font-size: xx-large;
                         background-color: transparent; margin-left:  0px; margin-right:  auto;
                 padding: 0px 25px;" onclick="mybrain('messagebar','optionbar',  'inline-flex')"> < </button>
-                <div id= "board" style="overflow-y: auto;width: -webkit-fill-available;margin: auto;"></div>
+                <div id= "board" style="overflow-y: auto;width: -webkit-fill-available;margin: auto;margin-bottom: 60px;"></div>
                 
                 {% if user.is_authenticated%}
-                <form style="margin: 10px; " action="{%url 'group:sendmessage' group.id%}" class=".sendmessage" method="POST">
+                <form style="margin: 10px 30px;position: fixed;bottom: 0px; " id="chat-box" group.id%}" class=".sendmessage" method="POST">
                     {% csrf_token %}
                     
                     <div id="send">
-                    <input name="text">
+                    <input id="msg_field" name="text">
                     </input>
                     <input style="background-color: green;color: white; font-weight: 100;" type="Submit" value="send">
 
@@ -101,6 +102,49 @@
     </body>
 <html>
 <script>
+    var request;
+
+        $('#chat-box').submit(function (event) {
+            // body...
+            event.preventDefault(); 
+            if(request){
+                request.abort(); 
+            }
+            var serializedData=$(this).serialize();
+            $.ajax({
+                url: "{%url 'group:sendmessage'  group.id%}", 
+                type: "POST", 
+                data: serializedData, 
+                success: function(){
+                    mesagetext=document.getElementById('msg_field').value; 
+                    messageblock(mesagetext , String(Date.now()), "{{user}}"); 
+                    scrolltoend(); 
+                    document.getElementById('msg_field').value = ""
+                }
+            })
+        });
+        $("#groupdata").submit(function(event){
+
+            event.preventDefault();
+
+            if (request) {
+                request.abort();
+            }
+            var $form = $(this);
+            // Serialize the data in the form
+            var serializedData = $form.serialize();
+            console.log($form.serialize()); 
+
+            $.ajax({
+                url: "/group/editGroupData/{{group.id}}",
+                type: "post",
+                data: serializedData
+            });
+            document.getElementById("titlenameview").textContent=document.getElementById("titlename").value;
+            document.getElementById("textcontentview").textContent=document.getElementById("textcontent").value;
+            document.getElementById("groupdata").style.display="none";  
+            document.getElementById("groupdataview").style.display="block";  
+        });
     function mybrain(noneid, onviewid, poz){
         document.getElementById(noneid).style.display="none"; 
         document.getElementById(onviewid).style.display=poz; 
@@ -111,7 +155,7 @@
         }, 800);
     }
 
-    board=document.getElementById('board'); 
+
     blocktext="<div class='right-message'><a href='#'>{publisher}</a>"
         + "<h3> {text} </h3>"
         + " <span class='time'>{time}</span></div>";
@@ -119,12 +163,13 @@
         + "<h3> {text} </h3>"
         + " <span class='time'>{time}</span></div>"; 
     $(function () { 
-        setInterval(messageList, 10000000)
+        setInterval(messageList, 5000)
     })
     document.body.onload=function(){
         messageList(scrolltoend); 
     }; 
 
+    board=document.getElementById('board');
 
     function messageList(blet){
         $.ajax({
@@ -156,10 +201,13 @@
         
         .replace("{publisher}", publisher)
         .replace("{text}", text)
-            .replace("{time}", time.slice(0, 5));
-        block=urlify(block);  
+            .replace("{time}", time.slice(11, 16));
+        block=urlify(block);
+    board=document.getElementById('board');
+
         board.innerHTML += block; 
     }
+
     function urlify(text) {
         var urlRegex = /(https?:\/\/[^\s]+)/g;
         return text.replace(urlRegex, function(url) {
@@ -170,35 +218,13 @@
     }
     {%if group.admin == user%}
     // Variable to hold request
-    var request;
 
     // Bind to the submit event of our form
     function startedit() {
         document.getElementById("groupdata").style.display="block";  
         document.getElementById("groupdataview").style.display="none";
     }; 
-    $("#groupdata").submit(function(event){
-
-        event.preventDefault();
-
-        if (request) {
-            request.abort();
-        }
-        var $form = $(this);
-        // Serialize the data in the form
-        var serializedData = $form.serialize();
-        console.log($form.serialize()); 
-
-        $.ajax({
-            url: "/group/editGroupData/{{group.id}}",
-            type: "post",
-            data: serializedData
-        });
-        document.getElementById("titlenameview").textContent=document.getElementById("titlename").value;
-        document.getElementById("textcontentview").textContent=document.getElementById("textcontent").value;
-        document.getElementById("groupdata").style.display="none";  
-        document.getElementById("groupdataview").style.display="block";  
-    });
+  
     {%endif%}
 </script>
 </html>
