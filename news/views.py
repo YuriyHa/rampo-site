@@ -9,19 +9,25 @@ def index(request):
     return render(request, 'home.html', {'post_list': latest_post, 'user': request.user})
 
 def add(request): 
-    return render(request, "add.html", {'user': request.user})
+    if request.user.is_authenticated: 
+        return render(request, "add.html", {'user': request.user})
+    else: 
+        return redirect("/signup/")
 
-def post(request): 
-    if request.method=="POST":  
-        title = request.POST['title']
-        text = request.POST['text']
+def post(request):
+    if request.user.is_authenticated:  
+        if request.method=="POST":  
+            title = request.POST['title']
+            text = request.POST['text']
 
-        post=Post.objects.create(title=title, text=text, publisher=request.user, pub_date =datetime.now())
-        post.save()
-        post_id= post.id
-        print('post has succesfuly saved: id -- ', post_id)
-            
-        return redirect('/news/' + str(post_id))
+            post=Post.objects.create(title=title, text=text, publisher=request.user, pub_date =datetime.now())
+            post.save()
+            post_id= post.id
+            print('post has succesfuly saved: id -- ', post_id)
+                
+            return redirect('/news/' + str(post_id))
+    else: 
+        return redirect("/signup/")
 
 def comment(request, post_id): 
     if request.method=="POST": 

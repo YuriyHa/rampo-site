@@ -10,15 +10,21 @@ from django.contrib.auth.models import User
 def index(request): 
     return render(request, "group/home.html", {'groups': Group.objects.all()})
 
-def addpage(request): 
-    return render(request, "group/add.html", {})
+def addpage(request):
+    if request.user.is_authenticated:  
+        return render(request, "group/add.html", {})
+    else: 
+        return redirect("/signup")
 
 def addgroup(request): 
-    if (request.method == "POST"):
-        group=Group.objects.create(titlename=request.POST['title'],
-                                   textcontent=request.POST['text'],
-                                   admin=request.user)
-        return redirect("/group/"+str(group.id))
+    if request.user.is_authenticated: 
+        if (request.method == "POST"):
+            group=Group.objects.create(titlename=request.POST['title'],
+                                       textcontent=request.POST['text'],
+                                       admin=request.user)
+            return redirect("/group/"+str(group.id))
+    else: 
+        return redirect("/signup")
         
 def group(request, groupid): 
     group= get_object_or_404(Group, pk=groupid)
