@@ -38,13 +38,18 @@
         
             <div class="post content-main" style="">
                     <h1> Add new post </h1>
+                    <ul style="color:grey">
+                        {%for func in functions%}
+                        <li>{{func}}</li>
+                        {%endfor%}
+                    </ul>
                 <form method="POST" action="{%url 'news:post'%}" style="display: flex;
                 flex-direction: column;width: -webkit-fill-available;">
                     {% csrf_token %}
                     <span>title: </span>
-                    <input type="text" name="title" style="background-color: whitesmoke;"><br>
+                    <input placeholder="Write title name..." type="text" name="title" style="background-color: whitesmoke;"><br>
                     <span>text: </span>
-                    <textarea name="text" style ="background-color: whitesmoke;min-height: 150px;"></textarea><br>
+                    <textarea placeholder="write dewscription text" name="text" style ="background-color: whitesmoke;min-height: 150px;"></textarea><br>
 
                     <input type="Submit" value="Add" style="margin: auto; width: 200px; ">
                 </form>         

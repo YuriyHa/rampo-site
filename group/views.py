@@ -10,6 +10,15 @@ from django.contrib.auth.models import User
 def index(request): 
     return render(request, "group/home.html", {'groups': Group.objects.all()})
 
+def deletemessage(request, messageid):
+    message=get_object_or_404(Message,pk=messageid) 
+    if request.user==message.publisher:
+        message.delete()
+    elif request.user==message.group.admin:
+        message.delete()
+
+    return redirect("/group/"+str(message.group.id))
+
 def addpage(request):
     if request.user.is_authenticated:  
         return render(request, "group/add.html", {})

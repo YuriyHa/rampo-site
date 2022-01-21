@@ -157,9 +157,15 @@
 
 
     blocktext="<div class='right-message'><a href='#'>{publisher}</a>"
+        {%if group.admin == user%}
+        + '<a href="/group/delete-message/{message-id}" style="color:grey" class="function-button"> delete </a>'
+
+        {%endif%}
         + "<h3> {text} </h3>"
         + " <span class='time'>{time}</span></div>";
-    myblocktext= "<div class='left-message'><a href='#'>{publisher}</a>"
+    myblocktext= "<div class='left-message'>"
+        + "<a href='#'>{publisher}</a>"
+        + '<a href="/group/delete-message/{message-id}" style="color:grey" class="function-button"> delete </a>'
         + "<h3> {text} </h3>"
         + " <span class='time'>{time}</span></div>"; 
     $(function () { 
@@ -179,7 +185,7 @@
                 const data=response.data;
                 board.innerHTML=""; 
                 data.map(message=>{ 
-                    messageblock(message.text, message.time, message.publisher); 
+                    messageblock(message.text, message.time, message.publisher, message.id); 
                 });  
                 if (blet)blet(); 
             },
@@ -188,14 +194,14 @@
             }
         });
     }
-    function messageblock(text, time, publisher){
+    function messageblock(text, time, publisher, id){
         let EREN=":"; 
         console.log(publisher)
         if (publisher == '{{user}}'){
-            EREN=myblocktext; 
+            EREN=myblocktext.replace("{message-id}", id)
         }
         else{
-            EREN=blocktext; 
+            EREN=blocktext{% if group.admin == user %}.replace("{message-id}", id){% endif %}; 
         }
         let block=EREN
         

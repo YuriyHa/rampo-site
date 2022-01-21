@@ -14,5 +14,6 @@ urlpatterns = [
     path("sendmessage/<int:groupid>", views.sendmessage, name="sendmessage"), 
     path("delete/<int:groupid>", views.delete, name="delete"),
     path("editGroupData/<int:groupid>", views.editgroupdata, name="edit"),
+    path("delete-message/<int:messageid>", views.deletemessage, name="deletemassage"),
 ]
  

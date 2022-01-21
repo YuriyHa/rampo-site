@@ -9,29 +9,30 @@ projects=[
     {
         'image': "static/images/message.png", 
         'link': "/chat/",
-        'text': "Chats Project"
+        'text': "private chat with any site users"
     }, 
     {
         'image': "static/images/group.png", 
         'link': "/group/",
-        'text': "Groups Projects"
+        'text': "public chat where everyone can write"
     }, 
     {
         'image': "static/images/news.png", 
         'link': "/news/",
-        'text': "News! Project"
+        'text': "open social network where everyone can share content"
     },
     {
         'image': "https://logos-world.net/wp-content/uploads/2020/11/GitHub-Emblem.png", 
         'link': "https://github.com/YuriyHa/rampo-site",
-        'text': "проекты с открытым исходным кодом!"
+        'text': "open source projects in GitHub!"
     },  
 ]
 
 update= [
-            "+feed", 
-            "+chat", 
-            "+groups", 
+            "+ feed - the social network http://yuriyha.pythonanywhere.com/news/", 
+            "+ chat - private chat http://yuriyha.pythonanywhere.com/chat/", 
+            "+ groups - public chat http://yuriyha.pythonanywhere.com/group/", 
+            "+ paste images & big texts - http://yuriyha.pythonanywhere.com/news/3", 
 ]
 
 def index(request):

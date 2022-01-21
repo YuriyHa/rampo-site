@@ -8,9 +8,13 @@ def index(request):
     latest_post = Post.objects.order_by('-pub_date')[:5]
     return render(request, 'home.html', {'post_list': latest_post, 'user': request.user})
 
+addfunction=[
+    '"img:image-url-address" - paste image with url', 
+    '"<<< description/text >>>" - big text, header line', 
+    ]
 def add(request): 
     if request.user.is_authenticated: 
-        return render(request, "add.html", {'user': request.user})
+        return render(request, "add.html", {'user': request.user, 'functions':addfunction})
     else: 
         return redirect("/signup/")
 
@@ -49,7 +53,7 @@ def data(request, post_id):
     #     print(comment.creator)
     # print(comments)
         
-    return render(request, 'data.html', {'post': post, 'comments': comments, 'iscreator': post.publisher==request.user, 'user': request.user})
+    return render(request, 'data.html', {'functions':addfunction,'post': post, 'comments': comments, 'iscreator': post.publisher==request.user, 'user': request.user})
 
 def deletepost(request, post_id): 
     post = get_object_or_404(Post, pk=post_id)

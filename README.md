@@ -14,6 +14,8 @@ pip install django
 pip install django-rest-framework
 ```
 
+<!-- ![alt text](http://url/to/img.png)
+ -->
 ## How to use?
 
 - Clone the repository
