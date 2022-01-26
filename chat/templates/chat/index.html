@@ -81,8 +81,10 @@
 
     <div style="display: flex;flex-direction: column;">
     <div style="position: relative; min-height: 500px;">
-        <img src="{%static 'images/bg-image.png'%}" style="height:  500px;z-index:  -1;position:  absolute;right: 10px;">
+        <img src="{%static 'images/bg-image.png'%}" style="min-height:  500px;z-index:  -1;position:  absolute;right: 10px;">
         <div class="bg-poster" style="max-width: 300px;">
+            <h2><a href="/news/5" style="color: white;">get started</a></h2>
+            <div class="knifesm" style="background-color: white;"></div>
             <h2>updates</h2>
             <ul>
                 {%for up in update%}

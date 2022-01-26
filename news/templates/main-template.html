@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Home - News</title>
+        <link rel="stylesheet" type="text/css" href="{%static 'css/main.css'%}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=no">
+        <link rel="shortcut icon" href="{% static 'images/icon.png' %}">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    </head>
+    <style type="text/css">
+
+    </style>
+    <body>
+        <div class="top-panel-bg">
+            <div class="top-panel ">
+                <div id="search">
+                    <form name="myform" method="GET" style="display: flex;" action="{% url 'news:search' %}"> 
+                        {% csrf_token %}
+                        <input type="text" name="search" style="border-radius: 40px;" placeholder="search...">
+                        <input type="Submit" style="color: transparent; background-image: url('{%static 'images/searchicon.png'%}'); background-size: 90%;
+                        background-repeat: no-repeat; background-position: center; background-color:transparent;" value="dub"></input>
+                    </form>
+                </div>
+                {%if user.is_authenticated%}
+                    <div class="link-button-text top-panel-item dropdown-bg">{{user}}(me)
+                            <div class="dropdown-content">
+                                <a  class="item" href={%url 'userdata' user%}>User profile</a>
+                                <a  class="item" href={%url 'news:add'%}>+ add post</a>
+                                <a  class="item" href={%url 'group:create'%}>+ add group</a>
+                            </div>
+                        </div>
+                    
+                {%else%}
+                    <a href={% url 'register' %}>registration</a>
+                {%endif%}
+                <a href={%url 'openchat'%} class="link-button-text top-panel-item">site.com</a>
+                <a href={%url 'group:index'%} class="link-button-text top-panel-item">groups</a>
+                <a href={%url 'news:index'%} class="link-button-text top-panel-item">news</a>
+                <a href={%url 'index'%} class="link-button-text top-panel-item">chat</a>
+            </div>       
+        </div>
+
+        <div id = "posts" class="posts" >
+            <div>
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+        <div style="height: 100%;">
+            {%block fullscreen%}
+            {%endblock%}
+        </div>
+
+
+    </body>
+</html>

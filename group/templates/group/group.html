@@ -1,106 +1,71 @@
-{%load static %}
-<!DOCTYPE html>
-<html>
-    <head> 
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <link rel="shortcut icon" href="{% static 'images/icon.png' %}">
-        <title>{{group.titlename}} - Group</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=no">
-        <link rel="stylesheet" href={% static 'css/main.css' %}>
-    </head>
-    <body><div style="  background-color: aliceblue;">
-    <div class="top-panel " style="padding:  10px;margin: auto;
-    width: fit-content;
-    background-color: transparent;">
-                    <!-- <div id="search">
-                        <form name="myform" method="GET" action="{% url 'news:search' %}"> 
-                            {% csrf_token %}
-                            <input type="text" name="search">
-                            <input type="Submit" value="search">
-                        </form>
-                    </div> -->
-                    <a href="/search" class="link-button-text">Search</a>
-
-                    <a href={%url 'news:index'%} class="link-button-text">Home</a>
-                    <a href={%url 'group:index'%} class="link-button-text">groups</a>
-                    <a href={%url 'index'%} class="link-button-text">chat</a>
-                    {%if user.is_authenticated%}
-                        <a href={% url 'userdata' user.username %} class="link-button-text">{{user}}(me)</a>
-                    {%else%}
-                        <a href={% url 'register' %}>registration</a>
-                    {%endif%}
-                    <button class="top-panel-later">vniz
-                        <span class="gh">aeftaff</span></button>
-                </div>
-     </div>
-
-        <div id="main">
-            <div id="optionbar" class="fuck" style=" ">
-                {%if user == group.admin%}
-                <div style="margin-left: 30px; ">
-                    <a href="{% url 'group:delete' group.id%}">:delete </a><br>
-                    <a id="edit_a" onclick="startedit();"> :edit</a>
-                </div>
-                <form method="POST" id="groupdata" style="display: none;">
-                    {%csrf_token%}
-                    name: 
-                    <input id="titlename" type="text" name="title" class="text-input" value="{{group.titlename}}">
-                    description: 
-                    <textarea id="textcontent" name="text" class="text-input" style="display: block;height: 100px;width: -webkit-fill-available;">{{group.textcontent}}</textarea>
-
-                    <input type="Submit" value="submit" class="text-input" style="background-color: brown;color: white;display: block;margin: auto;"> 
-                </form>
-                {%endif%}
-
-                <button class="mobile" style="margin: 0px;
-                margin-right: 0px;margin-left: auto;    font-size: xx-large;
-                padding: 0px 25px;" onclick="mybrain('optionbar', 'messagebar', 'inline-flex')"> > </button>
-                    
-                <div style="max-height: 300px; overflow: auto;
-                 padding: 30px;background-color: white;" id="groupdataview">
-
-                    <a href="{%url 'userdata' group.admin%}">{{group.admin}}</a>
-                    <h1 id="titlenameview">{{group.titlename}}</h1>    
-                    <span id="textcontentview">{{group.textcontent}}</span>
-                    <div class="knife"></div>
-                </div>
-
-                {%if users%}
-                    <div style="padding: 30px;overflow: auto;">
-                        users:<br>
-                        {%for user in users%}
-                             <a href={%url 'userdata' user%}>{{user}}</a><br>
-                        {%endfor%}
-                    </div> 
-                {%else%}
-                    <a href="{%url 'userdata' group.admin%}">{{group.admin}} - {{group.admin.email}}</a>
-                {%endif%}
-            </div>
-            <div id="messagebar">
-
-                <button class="mobile" style="margin: 0px;font-size: xx-large;
-                        background-color: transparent; margin-left:  0px; margin-right:  auto;
-                padding: 0px 25px;" onclick="mybrain('messagebar','optionbar',  'inline-flex')"> < </button>
-                <div id= "board" style="overflow-y: auto;width: -webkit-fill-available;margin: auto;margin-bottom: 60px;"></div>
-                
-                {% if user.is_authenticated%}
-                <form style="margin: 10px 30px;position: fixed;bottom: 0px; " id="chat-box" group.id%}" class=".sendmessage" method="POST">
-                    {% csrf_token %}
-                    
-                    <div id="send">
-                    <input id="msg_field" name="text">
-                    </input>
-                    <input style="background-color: green;color: white; font-weight: 100;" type="Submit" value="send">
-
-                </div>
-                </form>
-                {% else%}
-                    <div style="margin: 20px; ">for send message please <a href="{% url 'register' %}">sing up</a ></div>
-                {%endif%}
-            </div>
+{%extends "main-template.html"%}
+{%load static%}
+{%block fullscreen %}
+<div id="main">
+    <div id="optionbar" class="fuck" style=" ">
+        {%if user == group.admin%}
+        <div style="margin-left: 30px; ">
+            <a href="{% url 'group:delete' group.id%}">:delete </a><br>
+            <a id="edit_a" onclick="startedit();"> :edit</a>
         </div>
-    </body>
-<html>
+        <form method="POST" id="groupdata" style="display: none;">
+            {%csrf_token%}
+            name: 
+            <input id="titlename" type="text" name="title" class="text-input" value="{{group.titlename}}">
+            description: 
+            <textarea id="textcontent" name="text" class="text-input" style="display: block;height: 100px;width: -webkit-fill-available;">{{group.textcontent}}</textarea>
+
+            <input type="Submit" value="submit" class="text-input" style="background-color: brown;color: white;display: block;margin: auto;"> 
+        </form>
+        {%endif%}
+
+        <button class="mobile" style="margin: 0px;
+        margin-right: 0px;margin-left: auto;    font-size: xx-large;
+        padding: 0px 25px;" onclick="mybrain('optionbar', 'messagebar', 'inline-flex')"> > </button>
+            
+        <div style="max-height: 300px; overflow: auto;
+         padding: 30px;background-color: white;" id="groupdataview">
+
+            <a href="{%url 'userdata' group.admin%}">{{group.admin}}</a>
+            <h1 id="titlenameview">{{group.titlename}}</h1>    
+            <span id="textcontentview">{{group.textcontent}}</span>
+            <div class="knife"></div>
+        </div>
+
+        {%if users%}
+            <div style="padding: 30px;overflow: auto;">
+                users:<br>
+                {%for user in users%}
+                     <a href={%url 'userdata' user%}>{{user}}</a><br>
+                {%endfor%}
+            </div> 
+        {%else%}
+            <a href="{%url 'userdata' group.admin%}">{{group.admin}} - {{group.admin.email}}</a>
+        {%endif%}
+    </div>
+    <div id="messagebar">
+
+        <button class="mobile" style="margin: 0px;font-size: xx-large;
+                background-color: transparent; margin-left:  0px; margin-right:  auto;
+        padding: 0px 25px;" onclick="mybrain('messagebar','optionbar',  'inline-flex')"> < </button>
+        <div id= "board" style="overflow-y: auto;width: -webkit-fill-available;margin: auto;margin-bottom: 60px;"></div>
+        
+        {% if user.is_authenticated%}
+        <form style="margin: 10px 30px;position: fixed;bottom: 0px; " id="chat-box" group.id%}" class=".sendmessage" method="POST">
+            {% csrf_token %}
+            
+            <div id="send">
+            <input id="msg_field" name="text">
+            </input>
+            <input style="background-color: green;color: white; font-weight: 100;" type="Submit" value="send">
+
+        </div>
+        </form>
+        {% else%}
+            <div style="margin: 20px; ">for send message please <a href="{% url 'register' %}">sing up</a ></div>
+        {%endif%}
+    </div>
+</div>
 <script>
     var request;
 
@@ -156,14 +121,14 @@
     }
 
 
-    blocktext="<div class='right-message'><a href='#'>{publisher}</a>"
+    blocktext="<div class='right-message message-text-hey'><a href='#'>{publisher}</a>"
         {%if group.admin == user%}
         + '<a href="/group/delete-message/{message-id}" style="color:grey" class="function-button"> delete </a>'
 
         {%endif%}
         + "<h3> {text} </h3>"
         + " <span class='time'>{time}</span></div>";
-    myblocktext= "<div class='left-message'>"
+    myblocktext= "<div class='left-message message-text-hey'>"
         + "<a href='#'>{publisher}</a>"
         + '<a href="/group/delete-message/{message-id}" style="color:grey" class="function-button"> delete </a>'
         + "<h3> {text} </h3>"
@@ -171,9 +136,9 @@
     $(function () { 
         setInterval(messageList, 5000)
     })
-    document.body.onload=function(){
+    window.addEventListener('load', (event) => {
         messageList(scrolltoend); 
-    }; 
+    });
 
     board=document.getElementById('board');
 
@@ -209,19 +174,13 @@
         .replace("{text}", text)
             .replace("{time}", time.slice(11, 16));
         block=urlify(block);
-    board=document.getElementById('board');
+        block=imgify(block); 
+        block=h1fy(block); 
+        board=document.getElementById('board');
 
         board.innerHTML += block; 
     }
 
-    function urlify(text) {
-        var urlRegex = /(https?:\/\/[^\s]+)/g;
-        return text.replace(urlRegex, function(url) {
-          return '<a href="' + url + '">' + url + '</a>';
-        })
-        // or alternatively
-        // return text.replace(urlRegex, '<a href="$1">$1</a>')
-    }
     {%if group.admin == user%}
     // Variable to hold request
 
@@ -233,4 +192,7 @@
   
     {%endif%}
 </script>
-</html>
+<script type="text/javascript" src="{% static 'js/beauti-text.js' %}"></script>
+
+
+{%endblock%}

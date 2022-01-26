@@ -1,132 +1,96 @@
+{% extends "main-template.html" %}
 {% load static %}
-<!DOCTYPE html>
 
-<html>
-    <head>
-        <title>{{post.title}} - News</title>
-        <link rel="shortcut icon" href="{% static 'images/icon.png' %}">
-        <link rel="stylesheet" type="text/css" href="{%static 'css/main.css'%}">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=no">
-
-    </head>
-    <style type="text/css">
-            .message-text-hey img{
-                width: -webkit-fill-available;
-            }
-    </style>
-    <body>
-        <div id = "posts" class="posts">
-            <div class="top-panel ">
-                <div id="search">
-                    <form name="myform" method="GET" action="{% url 'news:search' %}"> 
-                        {% csrf_token %}
-                        <input type="text" name="search">
-                        <input type="Submit" value="search">
-                    </form>
+{%block content %}
+    <div class="post content-main" style="">
+        <div style="display: flex;" class="function-button-bg">
+            <div class="icon" style="background-image: url({% static 'images/user_image.jpg'%} );"></div>
+            <a  style="margin-left: 10px;" href={%url 'userdata' post.publisher%}>{{post.publisher}}</a>
+            {%if user == post.publisher%}
+                <div style="display: inline-flex;margin-right: 0px;margin-left: auto;">
+                    <a href="{%url 'news:deletepost' post.id%}" class="function-button">delete</a>
+                    <a onclick="startedit()" href="#mainview" class="function-button">edit</a>
                 </div>
-                <a href={%url 'news:index'%} class="link-button-text">Home</a>
-                <a href={%url 'group:index'%} class="link-button-text">groups</a>
-                <a href={%url 'index'%} class="link-button-text">chat</a>
-                {%if user.is_authenticated%}
-                    <a href={% url 'userdata' user.username %} class="link-button-text">{{user}}(me)</a>
-                {%else%}
-                    <a href={% url 'register' %}>registration</a>
-                {%endif%}
-                <button class="top-panel-later">vniz
-                    <span class="gh">aeftaff</span></button>
-            </div>
-
-            <div class="post content-main" style="">
-                <div style="display: flex;" class="function-button-bg">
-                    <div class="icon" style="background-image: url({% static 'images/user_image.jpg'%} );"></div>
-                    <a  style="margin-left: 10px;" href={%url 'userdata' post.publisher%}>{{post.publisher}}</a>
-                    {%if user == post.publisher%}
-                        <div style="display: inline-flex;margin-right: 0px;margin-left: auto;">
-                            <a href="{%url 'news:deletepost' post.id%}" class="function-button">delete</a>
-                            <a onclick="startedit()" href="#mainview" class="function-button">edit</a>
-                        </div>
-                    {%endif%}   
-                </div>
-                <div id="mainview">   
-                    <h1>{{post.title}}</h1><br>
-                    <div style="white-space: break-spaces;" class= "message-text-hey">{{post.text}}</div>
-                </div >
-                <div id="mainedit" style="display: none;">
-                    {%if iscreator%}
-                        <form action="{%url 'news:editpost' post.id%}" method="POST"style="display: flex;
-            flex-direction: column;width: -webkit-fill-available;">
-                            {% csrf_token %}
-
-                            <ul style="color:grey">
-                                {%for func in functions%}
-                                <li>{{func}}</li>
-                                {%endfor%}
-                            </ul>
-                            <span>title: </span>
-                            <input type="text" value="{{post.title}}" name="title" style="background-color: whitesmoke;">
-                            <span>text: </span>
-                            <textarea name="text" style="background-color: whitesmoke;">{{post.text}}</textarea>
-                            <input type="Submit" value="Done" style="margin: auto; width: 200px; " onclick="endedit()">
-                        </form>
-                    {%endif%}
-                </div>
-                <br>         
-            </div>
-
-            {%if comments%}
-            <div style=" background-color: whitesmoke;" class="content-dett">
-                {%for comment in comments%}
-                <div class="post">
-                    <div style="display: flex;" class="function-button-bg">
-                        <div class="icon" style="background-image:  url({% static 'images/user_image.jpg'%} );"></div>
-                        <a  style="margin-left: 10px;" href={%url 'userdata' comment.publisher%}>{{post.publisher}}</a><br>   
-                    {%if user == post.publisher%}
-                        <div style="display: inline-flex;margin-right: 0px;margin-left: auto;">
-                            <a href="{%url 'news:deletecomment' comment.id%}" class="function-button">delete</a>
-                        </div>
-                    {%endif%}
-                    </div>
-                    <div style="padding:20px" class="description message-text-hey">{{comment.text}}</div>
-                </ div>
-                
-                <div class="knifesm"></div>
-                {%endfor%}
-                {% if user.is_authenticated %}
-                <form action="{%url 'news:comment' post.id%}" method="POST">
+            {%endif%}   
+        </div>
+        <div id="mainview">   
+            <h1>{{post.title}}</h1><br>
+            <div style="white-space: break-spaces;" class= "message-text-hey">{{post.text}}</div>
+        </div >
+        <div id="mainedit" style="display: none;">
+            {%if iscreator%}
+                <form action="{%url 'news:editpost' post.id%}" method="POST"style="display: flex;
+                    flex-direction: column;width: -webkit-fill-available;">
                     {% csrf_token %}
-                    <div style="display: flex;">
-                        <textarea name="text" style="resize: none;width: -webkit-fill-available;height: 100px;"></textarea>
-                        <input type="Submit" value="comment" style="height: 40px ;">
-                    </div> 
-                </form>
-                {%else%}
-                <div style="text-align: center;">
-                    comment = <a href={% url 'register' %}>registration</a>
-                </div>
-                {%endif%}
-            </div>
-            {%else%}
 
-            <div style=" background-color: whitesmoke;" class="content-dett">
-                {% if user.is_authenticated %}
-                Comment: 
-                <form action="{%url 'news:comment' post.id%}" method="POST">
-                    {% csrf_token %}
-                    <div style="display: flex;">
-                        <textarea name="text" style="resize: none;width: -webkit-fill-available;height: 100px;"></textarea>
-                        <input type="Submit" value="comment" style="height: 40px ;">
-                    </div> 
+                    <ul style="color:grey">
+                        {%for func in functions%}
+                        <li>{{func}}</li>
+                        {%endfor%}
+                    </ul>
+                    <span>title: </span>
+                    <input type="text" value="{{post.title}}" name="title" style="background-color: whitesmoke;">
+                    <span>text: </span>
+                    <textarea name="text" style="background-color: whitesmoke; min-height: 200px">{{post.text}}</textarea>
+                    <input type="Submit" value="Done" style="margin: auto; width: 200px; " onclick="endedit()">
                 </form>
-                {%else%}
-                <div style="text-align: center;">
-                    comment = <a href={% url 'register' %}>registration</a>
-                </div>
-                {%endif%}
-            </div>
             {%endif%}
         </div>
+        <br>         
+    </div>
 
-    </body>
+    {%if comments%}
+    <div style=" background-color: whitesmoke;" class="content-dett">
+        {%for comment in comments%}
+        <div class="post">
+            <div style="display: flex;" class="function-button-bg">
+                <div class="icon" style="background-image:  url({% static 'images/user_image.jpg'%} );"></div>
+                <a  style="margin-left: 10px;" href={%url 'userdata' comment.publisher%}>{{post.publisher}}</a><br>   
+            {%if user == post.publisher%}
+                <div style="display: inline-flex;margin-right: 0px;margin-left: auto;">
+                    <a href="{%url 'news:deletecomment' comment.id%}" class="function-button">delete</a>
+                </div>
+            {%endif%}
+            </div>
+            <div style="padding:20px" class="description message-text-hey">{{comment.text}}</div>
+        </ div>
+        
+        <div class="knifesm"></div>
+        {%endfor%}
+        {% if user.is_authenticated %}
+        <form action="{%url 'news:comment' post.id%}" method="POST">
+            {% csrf_token %}
+            <div style="display: flex;">
+                <textarea name="text" style="resize: none;width: -webkit-fill-available;height: 100px;"></textarea>
+                <input type="Submit" value="comment" style="height: 40px ;">
+            </div> 
+        </form>
+        {%else%}
+        <div style="text-align: center;">
+            comment = <a href={% url 'register' %}>registration</a>
+        </div>
+        {%endif%}
+        </div>
+    </div>
+    {%else%}
+
+    <div style=" background-color: whitesmoke;" class="content-dett">
+        {% if user.is_authenticated %}
+        Comment: 
+        <form action="{%url 'news:comment' post.id%}" method="POST">
+            {% csrf_token %}
+            <div style="display: flex;">
+                <textarea name="text" style="resize: none;width: -webkit-fill-available;height: 100px;"></textarea>
+                <input type="Submit" value="comment" style="height: 40px ;">
+            </div> 
+        </form>
+        {%else%}
+        <div style="text-align: center;">
+            comment = <a href={% url 'register' %}>registration</a>
+        </div>
+        {%endif%}
+    </div>
+    {%endif%}
     <script type="text/javascript">
         function startedit(){
             document.getElementById("mainview").style.display="none"; 
@@ -136,43 +100,7 @@
             document.getElementById("mainview").style.display="block"; 
             document.getElementById("mainedit").style.display="none"; 
         }
-        function urlify(text) {
-            var urlRegex = /( https?:\/\/[^\s]+)/g;
-            return text.replace(urlRegex, function(url) {
-              return '<a href="' + url + '">' + url + '</a>';
-            })
-            // or alternatively
-            // return text.replace(urlRegex, '<a href="$1">$1</a>')
-        }
-        console.log(imgify("sefse img:https://github.githubassets.com/images/modules/site/social-cards/github-social.png")); 
-        function imgify(text){ 
-            var https = /(img?:https:\/\/[^\s]+)/gm; 
-            var http = /(img?:http:\/\/[^\s]+)/gm; 
-            return text.replace(https, function(img_url) {
-                url=img_url.replace(/img?:/, ""); 
-                return '<img src="' + url + '">';
-            }).replace(http, function(img_url) {
-                url=img_url.replace(/img?:/, ""); 
-                return '<img src="' + url + '">';
-            }); 
-        }
-
-        console.log(h1fy("bitch <<<nigas>>>")); 
-        function h1fy(text){
-            return text.replace(/<<<(.*)>>>/gm, function(fuck){
-                return fuck.replace("<<<", '<h1>').replace(">>>", '</h1>');
-            });
-        } 
-        document.body.onload=messageToLink; 
-        function messageToLink (argument) {
-            messages =document.querySelectorAll(".message-text-hey"); 
-            for (var mesid =0; mesid < messages.length; mesid++){
-                messages[mesid].innerHTML=h1fy(messages[mesid].textContent); 
-                messages[mesid].innerHTML=imgify(messages[mesid].innerHTML); 
-                messages[mesid].innerHTML=urlify(messages[mesid].innerHTML);
-            }
-        }
     </script>
-</html>
-
+    <script type="text/javascript" src="{%static 'js/beauti-text.js'%}"></script>
+{%endblock%}
 

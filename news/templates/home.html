@@ -1,62 +1,26 @@
+{% extends "main-template.html" %}
 {% load static %}
-<!DOCTYPE html>
 
-<html>
-    <head>
-        <title>Home - News</title>
-        <link rel="stylesheet" type="text/css" href="{%static 'css/main.css'%}">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=no">
-        <link rel="shortcut icon" href="{% static 'images/icon.png' %}">
-
-    </head>
-    <style type="text/css">
-
-    </style>
-    <body>
-        <div id = "posts" class="posts">
-            <div class="top-panel ">
-                <div id="search">
-                    <form name="myform" method="GET" action="{% url 'news:search' %}"> 
-                        {% csrf_token %}
-                        <input type="text" name="search">
-                        <input type="Submit" value="search">
-                    </form>
-                </div>
-                <a href={%url 'news:add'%} class="link-button-text">+add post</a>
-                <a href={%url 'group:index'%} class="link-button-text">groups</a>
-                <a href={%url 'openchat'%} class="link-button-text">site.com</a>
-                <a href={%url 'index'%} class="link-button-text">chat</a>
-                {%if user.is_authenticated%}
-                    <a href={% url 'userdata' user.username %} class="link-button-text">{{user}}(me)</a>
-                {%else%}
-                    <a href={% url 'register' %}>registration</a>
-                {%endif%}
-                <button class="top-panel-later">vniz
-                    <span class="gh">aeftaff</span></button>
+{% block content %}
+    {%if post_list%}
+    <div class="content-dett">
+        {%for post in post_list%}
+        <div class="post" style="max-height: 407px;">
+            <div style="display: flex;">
+                <div class="icon" style="background-image: url({%static 'images/user_image.jpg'%});"></div>
+                <a  style="margin-left: 10px;" href={%url 'userdata' post.publisher%}>{{post.publisher}}</a><br>   
             </div>
-            {%if post_list%}
+            <h1>{{post.title}}</h1>
+            <span class="description">{{post.text}}</span>
 
-            <div class="content-dett">
-                {%for post in post_list%}
-                <div class="post" style="max-height: 407px;">
-                    <div style="display: flex;">
-                    <div class="icon" style="background-image: url({%static 'images/user_image.jpg'%});"></div>
-                    <a  style="margin-left: 10px;" href={%url 'userdata' post.publisher%}>{{post.publisher}}</a><br>   
-                    </div>
-                    <h1>{{post.title}}</h1>
-                    <span class="description">{{post.text}}</span>
-
-                <a class="link-button" href={%url 'news:data' post.id%} ></a>
-                </div>
-                
-                <div class="knifesm"></div>
-                {%endfor%}
-
-                {%else%}
-                <span>no posts</span>
-                {%endif%}
-            </div>
+        <a class="link-button" href={%url 'news:data' post.id%} ></a>
         </div>
+        
+        <div class="knife"></div>
+        {%endfor%}
 
-    </body>
-</html>
+        {%else%}
+        <span>no posts</span>
+        {%endif%}
+    </div>
+{% endblock%}

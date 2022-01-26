@@ -3,6 +3,11 @@
 
 {%block contentright%}blyat{%endblock%}
 {% block message %}
+<style type="text/css">
+    .message-text-hey img{
+        width: -webkit-fill-available;
+    }
+</style>
 {% for message in messages %}
     {% if curr_user == message.sender_name %}
         <div class="left-message">
@@ -19,52 +24,35 @@
     {% endif %}
 {% endfor %}
 <script>
-function scrolltoend() {
-    $('#board').stop().animate({
-        scrollTop: $('#board')[0].scrollHeight
-    }, 800);
-}
-
-function urlify(text) {
-    var urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, function(url) {
-      return '<a href="' + url + '">' + url + '</a>';
-    })
-    // or alternatively
-    // return text.replace(urlRegex, '<a href="$1">$1</a>')
-}
-document.body.onload=messageToLink; 
-function messageToLink (argument) {
-    messages =document.querySelectorAll(".message-text-hey"); 
-    for (var mesid =0; mesid < messages.length; mesid++){
-         messages[mesid].innerHTML = urlify(messages[mesid].innerHTML)
+    function scrolltoend() {
+        $('#board').stop().animate({
+            scrollTop: $('#board')[0].scrollHeight
+        }, 800);
     }
-}
 
-$(function () { 
-    setInterval(receive, 5000)
-})
-
-const text = '<div class="right-message">' +
-            '<p class="message-text-hey">{description}</p>' +
-            '<span class="time">{time}</span>' +
-            '</div>'; 
-
-function receive(){
-    $.get('/api/messages/' + sender_id + '/' + receiver_id, function(data){
-        if(data.length !== 0){
-            for(var i = 0; i < data.length; i++){
-                var field = text.replace('{description}', data[i].description);
-                var time = data[i].time.slice(0, 5) + ' a.m'
-                field = field.replace('{time}', time);
-                $('#board').append(field);
-                scrolltoend();
-                messageToLink(); 
-            }
-        }
+    $(function () { 
+        setInterval(receive, 5000)
     })
-}
 
+    const text = '<div class="right-message">' +
+                '<p class="message-text-hey">{description}</p>' +
+                '<span class="time">{time}</span>' +
+                '</div>'; 
+
+    function receive(){
+        $.get('/api/messages/' + sender_id + '/' + receiver_id, function(data){
+            if(data.length !== 0){
+                for(var i = 0; i < data.length; i++){
+                    var field = text.replace('{description}', data[i].description);
+                    var time = data[i].time.slice(0, 5) + ' a.m'
+                    field = field.replace('{time}', time);
+                    $('#board').append(field);
+                    scrolltoend();
+                    messageToLink(); 
+                }
+            }
+        })
+    }
 </script>
-
+<script type="text/javascript" src="{%static 'js/beauti-text.js'%}"></script>
 {% endblock %}
