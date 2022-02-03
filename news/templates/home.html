@@ -5,15 +5,31 @@
     {%if post_list%}
     <div class="content-dett">
         {%for post in post_list%}
-        <div class="post" style="max-height: 407px;">
-            <div style="display: flex;">
-                <div class="icon" style="background-image: url({%static 'images/user_image.jpg'%});"></div>
-                <a  style="margin-left: 10px;" href={%url 'userdata' post.publisher%}>{{post.publisher}}</a><br>   
+        <div >
+            <div class="post" style="max-height: 407px;position: relative;">
+                <div style="display: flex;">
+                    <div class="icon" style="background-image: url({%static 'images/user_image.jpg'%});"></div>
+                    <a  style="margin-left: 10px;" href={%url 'userdata' post.publisher%}>{{post.publisher}}</a><br>   
+                </div>
+                <h1>{{post.title}}</h1>
+                <span class="description">{{post.text}}</span>
+                <a class="link-button" href={%url 'news:data' post.id%} ></a>
             </div>
-            <h1>{{post.title}}</h1>
-            <span class="description">{{post.text}}</span>
+            <form class='like-panel'>
+                {%csrf_token%}
+                {%if post.is_fan %}
+                    <input type="Submit" class='sm-image like' value="">
+                {%else%}
+                    <input type="Submit" class='sm-image unlike' value="">
+                {%endif%}
+                <input class='item-id' type="hidden" value="{{post.id}}">
+                <span class="total-likes">{{post.total_likes}}</span>
 
-        <a class="link-button" href={%url 'news:data' post.id%} ></a>
+                <div class="sm-image" style="margin-left: 30px;background-image: url('https://www.nicepng.com/png/detail/119-1196219_ic-comment-comments-comments-icon-transparent.png');"></div>
+
+                <span class="total-likes">{{post.total_comments}}</span>
+
+            </form>
         </div>
         
         <div class="knife"></div>
@@ -23,4 +39,45 @@
         <span>no posts</span>
         {%endif%}
     </div>
+    <script type="text/javascript">
+    var request;
+    $('.like-panel').submit(function (event) {
+        // body...
+        event.preventDefault(); 
+        if(request){
+            request.abort(); 
+        }
+
+        var serializedData=$(this).serialize();
+        postid=this.querySelector('.item-id').value
+        var form=this
+        var likes=this.querySelector('.total-likes')
+        if (this.querySelector('.unlike'))
+        {
+            $.ajax({
+                url: "/api/v1/post/" + postid + "/like/", 
+                type: "POST", 
+                data: serializedData,
+                auth: ('yurka', 'len'), 
+                success: function(){
+                    form.querySelector('.unlike').setAttribute('class','sm-image like'); 
+                    likes.innerHTML=parseInt(likes.innerHTML)+1
+                }
+             });
+        }
+        if (this.querySelector('.like'))
+        {
+            $.ajax({
+                url: "/api/v1/post/" + postid + "/unlike/", 
+                type: "POST", 
+                data: serializedData,
+                auth: ('yurka', 'len'), 
+                success: function(){
+                    form.querySelector('.like').setAttribute('class','sm-image unlike'); 
+                    likes.innerHTML=parseInt(likes.innerHTML)-1           
+                }
+             });
+        }  
+    });
+    </script>
 {% endblock%}

@@ -2,10 +2,15 @@ from django.shortcuts import get_object_or_404, render, redirect
 from datetime import datetime
 from .models import Post, Comment
 from django.contrib.auth.models import User
+from . import servises
 
 # Create your views here.
 def index(request): 
-    latest_post = Post.objects.order_by('-pub_date')[:5]
+    latest_post = Post.objects.order_by('-pub_date')[:20]
+    for i in latest_post: 
+        i.is_fan=servises.is_fan(obj=i,user=request.user)
+        i.total_comments=Comment.objects.filter(Post=i).count() 
+
     return render(request, 'home.html', {'post_list': latest_post, 'user': request.user})
 
 addfunction=[
@@ -88,23 +93,27 @@ def deletecomment(request, comment_id):
 
 from collections import Counter
 def search(request):        
-    if request.method == 'GET': # this will be GET now      
-        title_name =  request.GET.get('search') # do some research what it does       
+    if request.method == 'GET': # this will be GET now
+        try:       
+            title_name =  request.GET.get('search') # do some research what it does       
 
-        fuck = []
-        for i in Post.objects.all(): 
-            if title_name in i.title:
-                fuck.append(i)
-            # filter returns a list so you might consider skip except part
+            fuck = []
+            for i in Post.objects.all(): 
+                if title_name in i.title:
+                    fuck.append(i)
+                # filter returns a list so you might consider skip except part
 
-        for i in Post.objects.all(): 
-            if title_name in i.text:
-                fuck.append(i)
-            # filter returns a list so you might consider skip except part
+            for i in Post.objects.all(): 
+                if title_name in i.text:
+                    fuck.append(i)
+                # filter returns a list so you might consider skip except part
 
-        print("oh fuck -- ", fuck)
-        lst=Counter(fuck)
-    
-        return render(request,"search.html",{'posts':lst, 'type': 'post'})
+            print("oh fuck -- ", fuck)
+            lst=Counter(fuck)
+        
+            return render(request,"search.html",{'posts':lst, 'type': 'post'})
+        except: 
+            return render(request,"search.html",{})
+
     else:
         return render(request,"search.html",{})

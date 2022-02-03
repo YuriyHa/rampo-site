@@ -7,10 +7,15 @@ from chat.serializers import MessageSerializer
  
 projects=[
     {
+        'image': "https://image.flaticon.com/icons/png/512/103/103093.png", 
+        'link': "/news/7",
+        'text': "Site API for mobile apps"
+    },
+    {
         'image': "static/images/message.png", 
         'link': "/chat/",
         'text': "private chat with any site users"
-    }, 
+    },  
     {
         'image': "static/images/group.png", 
         'link': "/group/",
@@ -29,10 +34,10 @@ projects=[
 ]
 
 update= [
-            "+ feed - the social network http://yuriyha.pythonanywhere.com/news/", 
-            "+ chat - private chat http://yuriyha.pythonanywhere.com/chat/", 
-            "+ groups - public chat http://yuriyha.pythonanywhere.com/group/", 
-            "+ paste images & big texts - http://yuriyha.pythonanywhere.com/news/3", 
+            "+ feed - the social network https://yuriyha.pythonanywhere.com/news/", 
+            "+ chat - private chat https://yuriyha.pythonanywhere.com/chat/", 
+            "+ groups - public chat https://yuriyha.pythonanywhere.com/group/", 
+            "+ paste images & big texts - https://yuriyha.pythonanywhere.com/news/3", 
 ]
 
 def index(request):

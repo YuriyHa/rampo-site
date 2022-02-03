@@ -2,6 +2,30 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200&display=swap');
 
+.like-panel{
+    display: flex;
+    width: fit-content;
+    margin: auto 40px auto auto;
+}
+
+.like-panel span, a {
+    height: fit-content; 
+    margin: auto;
+ }
+
+.sm-image{ 
+    width:  30px;
+    height: 30px;
+    background: center / contain no-repeat; 
+}
+
+.like{ 
+    background-image: url('https://icons.veryicon.com/png/o/internet--web/flatten-icon/like-19.png');
+}
+.unlike{ 
+    background-image: url('https://icons.veryicon.com/png/o/miscellaneous/ui-basic-linear-icon/like-106.png');
+}
+
 .dropdown-bg{
 
     }
@@ -11,7 +35,7 @@
       background-color: #f9f9f9;
       min-width: 200px;
       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 1;
+      z-index: 500;
     }
     .dropdown-bg:hover .dropdown-content {
       display: block;

@@ -16,13 +16,17 @@
     <body>
         <div class="top-panel-bg">
             <div class="top-panel ">
-                <div id="search">
+                <div id="search" class="dropdown-bg">
                     <form name="myform" method="GET" style="display: flex;" action="{% url 'news:search' %}"> 
                         {% csrf_token %}
                         <input type="text" name="search" style="border-radius: 40px;" placeholder="search...">
                         <input type="Submit" style="color: transparent; background-image: url('{%static 'images/searchicon.png'%}'); background-size: 90%;
                         background-repeat: no-repeat; background-position: center; background-color:transparent;" value="dub"></input>
                     </form>
+                    <div class="dropdown-content">
+                        <a  class="item" href={%url 'news:search'%}>Search Tweet</a>
+                        <a  class="item" href={%url 'search'%}>Search Friend</a>
+                    </div>
                 </div>
                 {%if user.is_authenticated%}
                     <div class="link-button-text top-panel-item dropdown-bg">{{user}}(me)
