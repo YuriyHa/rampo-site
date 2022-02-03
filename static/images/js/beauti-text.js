@@ -24,13 +24,6 @@ function h1fy(text){
     return text.replace(/<<<(.*)>>>/gm, function(fuck){
         return fuck.replace("<<<", '<h1>').replace(">>>", '</h1>');
     });
-}
-function BeautiWord(argument) {
-    var text=argument; 
-    text=h1fy(text); 
-    text=imgify(text); 
-    text=urlify(text);
-    return text; 
 } 
 document.body.onload=messageToLink; 
 function messageToLink (argument) {

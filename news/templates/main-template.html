@@ -34,7 +34,7 @@
                         </div>
                     
                 {%else%}
-                    <a href={% url 'register' %}>registration</a>
+                    <a class="link-button-text top-panel-item" href={% url 'register' %}>registration</a>
                 {%endif%}
                 <a href={%url 'openchat'%} class="link-button-text top-panel-item">site.com</a>
                 <a href={%url 'group:index'%} class="link-button-text top-panel-item">groups</a>
@@ -49,10 +49,8 @@
                 {% endblock %}
             </div>
         </div>
-        <div style="height: 100%;">
-            {%block fullscreen%}
-            {%endblock%}
-        </div>
+        {%block fullscreen%}
+        {%endblock%}
 
 
     </body>

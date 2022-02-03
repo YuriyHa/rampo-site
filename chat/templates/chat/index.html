@@ -1,7 +1,12 @@
+{%extends "main-template.html"%}
+{%block fullscreen%}
 {%load static %}
         <link rel="shortcut icon" href="{% static 'images/icon.png' %}">
 
 <style>
+    body{
+        background-color: #c9d6ef;
+    }
     .item-bg{
         box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
         display: inline-block;
@@ -26,7 +31,7 @@
         background-size: 75%;
         background-repeat: no-repeat;
         background-position: center;
-        background-color: antiquewhite;
+        background-color: #ddb889;
     }   
     .bg-poster{
         margin: 40px;
@@ -51,63 +56,34 @@
         }   
     }
 </style>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui, user-scalable=no">
-
-<div style="  background-color: aliceblue;box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;">
-    <div class="top-panel " style="padding:  10px;margin: auto;
-    width: fit-content;
-    background-color: transparent;">
-                    <!-- <div id="search">
-                        <form name="myform" method="GET" action="{% url 'news:search' %}"> 
-                            {% csrf_token %}
-                            <input type="text" name="search">
-                            <input type="Submit" value="search">
-                        </form>
-                    </div> -->
-                    <a href="/search" class="link-button-text">Search</a>
-
-                    <a href={%url 'news:index'%} class="link-button-text">Feed</a>
-                    <a href={%url 'group:index'%} class="link-button-text">groups</a>
-                    <a href={%url 'index'%} class="link-button-text">chat</a>
-                    {%if user.is_authenticated%}
-                        <a href={% url 'userdata' user.username %} class="link-button-text">{{user}}(me)</a>
-                    {%else%}
-                        <a href={% url 'register' %}>registration</a>
-                    {%endif%}
-                    <button class="top-panel-later">vniz
-                        <span class="gh">aeftaff</span></button>
-                </div>
-     </div>
-
     <div style="display: flex;flex-direction: column;">
-    <div style="position: relative; min-height: 500px;">
-        <img src="{%static 'images/bg-image.png'%}" style="min-height:  500px;z-index:  -1;position:  absolute;right: 10px;">
-        <div class="bg-poster" style="max-width: 300px;">
-            <h2><a href="/news/5" style="color: white;">get started</a></h2>
-            <div class="knifesm" style="background-color: white;"></div>
-            <h2>updates</h2>
-            <ul>
-                {%for up in update%}
-                <li class="message-text-hey">{{up}}</li>
-                {%endfor%}
-            </ul>
-        </div>
-    </div>
-    <div class="knifesm"></div>
-    <div class="content-dett continue">
-        <h1 style="text-align: center;">Projects</h1>
-        <div class="items-bg">
-            {%for pr in projects%}
-            <div class="item-bg">
-                <div class="item-img" style="background-image: url({{pr.image}});"></div>
-                <a class="item-main-link" href="{{pr.link}}"></a>
-                <div class="item-text" class="message-text-hey">{{pr.text}}</div>
+        <div style="position: relative; min-height: 500px;">
+            <img src="{%static 'images/bg-image.png'%}" style="min-height:  500px;z-index:  -1;position:  absolute;right: 10px;">
+            <div class="bg-poster" style="max-width: 300px;">
+                <h2><a href="/news/5" style="color: white;">get started</a></h2>
+                <div class="knifesm" style="background-color: white;"></div>
+                <h2>updates</h2>
+                <ul>
+                    {%for up in update%}
+                    <li class="message-text-hey">{{up}}</li>
+                    {%endfor%}
+                </ul>
             </div>
-            {%endfor%}
+        </div>
+        <div class="knifesm"></div>
+        <div class="content-dett continue">
+            <h1 style="text-align: center;">Projects</h1>
+            <div class="items-bg">
+                {%for pr in projects%}
+                <div class="item-bg">
+                    <div class="item-img" style="background-image: url({{pr.image}});"></div>
+                    <a class="item-main-link" href="{{pr.link}}"></a>
+                    <div class="item-text" class="message-text-hey">{{pr.text}}</div>
+                </div>
+                {%endfor%}
+            </div>
         </div>
     </div>
-    </div>
-{% block scripts %}
     <link rel="stylesheet" type="text/css" href="{%static 'css/main.css'%}">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

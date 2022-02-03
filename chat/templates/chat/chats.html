@@ -3,7 +3,7 @@
 
 {% block  content_chat %}
 
-        <div style="margin-top: 12px">
+        <div style="margin: 20px;">
             <h3>{{friend.name}}</h3>
         </div>
         <div class="messages" id="board">
@@ -27,6 +27,7 @@
         <div style="margin: 20px; ">for send message please <a href="{% url 'register' %}">sing up</a ></div>
         {%endif%}
 
+    <script type="text/javascript" src="{%static 'js/beauti-text.js'%}"></script>
     <script>
         var messageBody = document.querySelector('.messages');
         messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
@@ -60,13 +61,12 @@
 
             $.post('/api/messages', '{"sender_name": "' + sender + '", "receiver_name": "' +
                     receiver + '","description": "' + message + '" }', function (data) {
-                var field = text_box.replace('{description}', message);
+                var field = text_box.replace('{description}', BeautiWord(message));
                 var today = new Date();
                 var time = today.getHours() + ":" + today.getMinutes()
                 field = field.replace('{time}', time)
                 $('#board').append(field);
-                scrolltoend();
-                messageToLink(); 
+                scrolltoend();  
             })
         }
 
